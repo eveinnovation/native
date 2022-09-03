@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  ubuntu-20.04:
+    container_name: ubuntu-ffmpeg-20.04
+    command: "sh /data/build.sh"
+    build:
+      context: .
+    image: ffmpeg-build-ubuntu-20.04
+    volumes:
+      - .:/data
+    environment:
+      - DISPLAY=192.168.1.208:0
+

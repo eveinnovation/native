@@ -1,0 +1,14 @@
+prefix=/opt/ffmpeg
+exec_prefix=${prefix}
+libdir=/opt/ffmpeg/lib
+includedir=/opt/ffmpeg/include
+
+Name: libavformat
+Description: FFmpeg container format library
+Version: 58.76.100
+Requires: 
+Requires.private: libavcodec >= 58.134.100, libswresample >= 3.9.100, libavutil >= 56.70.100
+Conflicts:
+Libs: -L${libdir}  -lavformat 
+Libs.private: -lm -L/opt/ffmpeg/lib -lbluray -lz -lssl -lcrypto -L/opt/ffmpeg/lib -lsrt -L/opt/ffmpeg/lib -lzmq
+Cflags: -I${includedir}

@@ -1,0 +1,11 @@
+prefix=/opt/ffmpeg
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+incdir=${prefix}/include
+
+Name: libkvazaar
+Description: Open-source HEVC encoder
+Version: 2.0.0
+Libs: -L${libdir} -lkvazaar
+Libs.private: -lpthread -lm   -lrt
+Cflags: -I${incdir}

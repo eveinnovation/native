@@ -1,0 +1,14 @@
+prefix=/opt/ffmpeg
+exec_prefix=${prefix}
+libdir=/opt/ffmpeg/lib
+includedir=/opt/ffmpeg/include
+
+Name: libavcodec
+Description: FFmpeg codec library
+Version: 58.134.100
+Requires: 
+Requires.private: libswresample >= 3.9.100, libavutil >= 56.70.100
+Conflicts:
+Libs: -L${libdir}  -lavcodec 
+Libs.private: -L/opt/ffmpeg/lib -lvpx -lm -L/opt/ffmpeg/lib -lvpx -lm -L/opt/ffmpeg/lib -lvpx -lm -L/opt/ffmpeg/lib -lvpx -lm -pthread -lm -L/opt/ffmpeg/lib -laribb24 -lopencore-amrwb -lz -L/opt/ffmpeg/lib -laom -lm -lpthread -L/opt/ffmpeg/lib -lfdk-aac -lmp3lame -lm -lopencore-amrnb -L/opt/ffmpeg/lib -lopenjp2 -L/opt/ffmpeg/lib -lopus -ltheoraenc -ltheoradec -logg -L/opt/ffmpeg/lib -lvorbis -L/opt/ffmpeg/lib -lvorbisenc -L/opt/ffmpeg/lib -lwebp -L/opt/ffmpeg/lib -lx264 -L/opt/ffmpeg/lib -lx265 -lxvidcore -L/opt/ffmpeg/lib -lkvazaar
+Cflags: -I${includedir}

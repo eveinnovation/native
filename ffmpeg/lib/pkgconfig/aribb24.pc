@@ -1,0 +1,17 @@
+prefix=/opt/ffmpeg
+exec_prefix=${prefix}
+includedir=${prefix}/include
+datarootdir=${prefix}/share
+libdir=${exec_prefix}/lib
+datadir=${datarootdir}
+pkgincludedir=${prefix}/include/aribb24
+pkgdatadir=${datadir}/aribb24
+pkglibdir=${libdir}/aribb24
+pluginsdir=${pkglibdir}/plugins
+
+Name: ARIB B24 Library
+Description: ARIB B24 Captions decoder
+Version: 1.0.3
+Requires: 
+Cflags: -I${includedir}
+Libs: -L${libdir} -laribb24

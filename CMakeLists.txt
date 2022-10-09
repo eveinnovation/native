@@ -8,7 +8,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(FFMPEG_DEV_ROOT /data/ffmpeg)
+set(FFMPEG_DEV_ROOT /opt/homebrew/Cellar/ffmpeg@4/4.4.2_4)
 
 # set ffmpeg develop environment
 include_directories(${FFMPEG_DEV_ROOT}/include)
@@ -32,6 +32,4 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(demo_sdl src/main.cpp)
 
-target_link_libraries (demo_sdl
-        ${SDL2_LIBRARIES}
-)
+target_link_libraries (demo_sdl ${SDL2_LIBRARIES})

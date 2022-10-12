@@ -16,13 +16,18 @@ extern "C"
 
 //Refresh Event
 #define SFM_REFRESH_EVENT (SDL_USEREVENT + 1)
-
 #define SFM_BREAK_EVENT (SDL_USEREVENT + 2)
 
-int thread_exit = 0;
-void display(AVCodecContext*, AVPacket*, AVFrame*, SDL_Rect*, SDL_Texture*, SDL_Renderer*, double);
+/**
+ * Custom SDL_Event type.
+ * Notifies the program needs to quit.
+ */
+#define FF_QUIT_EVENT (SDL_USEREVENT + 3)
 
-void playaudio(AVCodecContext *ctx, AVPacket *pkt, AVFrame *frame, SDL_AudioDeviceID auddev);
+int thread_exit = 0;
+void playVideo(AVCodecContext*, AVPacket*, AVFrame*, SDL_Rect*, SDL_Texture*, SDL_Renderer*, double);
+
+void playAudio(AVCodecContext *ctx, AVPacket *pkt, AVFrame *frame, SDL_AudioDeviceID auddev);
 
 int sfp_refresh_thread(void* opaque) {
     
@@ -42,8 +47,6 @@ int sfp_refresh_thread(void* opaque) {
 
 	return 0;
 }
-
-
 
 
 int main(int argc, char* argv[])
@@ -76,8 +79,6 @@ int main(int argc, char* argv[])
 
 	char filepath[] = "../sample_960x400_ocean_with_audio.ts";
 
-
-	//av_register_all();
 	avformat_network_init();
 	pFormatCtx = avformat_alloc_context();
 
@@ -93,13 +94,7 @@ int main(int argc, char* argv[])
 	}
 	vidId = -1;
 
-	// for (i = 0; i < pFormatCtx->nb_streams; i++)
-		// if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-    //     AVRational rational = pFormatCtx->streams[i]->avg_frame_rate;
-    //     fpsrendering = 1.0 / ((double)rational.num / (double)(rational.den));
-		// 	videoindex = i;
-		// 	break;
-		// }
+
    bool foundVideo = false, foundAudio = false;
     for (int i = 0; i < pFormatCtx->nb_streams; i++) {
         AVCodecParameters *localparam = pFormatCtx->streams[i]->codecpar;
@@ -237,15 +232,17 @@ int main(int argc, char* argv[])
                         
                         break;
                     }
+										case FF_QUIT_EVENT:
+
                     case SDL_QUIT: {
+											  SDL_Quit();
                         running = false;
                         break;
                     }
                 }
             }
             if (packet->stream_index == vidId) {
-                display(vidCtx, packet, vFrame, &sdlRect,
-                    sdlTexture, sdlRenderer, fpsrendering);
+                playVideo(vidCtx, packet, vFrame, &sdlRect, sdlTexture, sdlRenderer, fpsrendering);
 
             }  else if (packet->stream_index == audId) {
           
@@ -303,7 +300,7 @@ int main(int argc, char* argv[])
 }
 
 
-void display(AVCodecContext* ctx, AVPacket* pkt, AVFrame* frame, SDL_Rect* rect,
+void playVideo(AVCodecContext* ctx, AVPacket* pkt, AVFrame* frame, SDL_Rect* rect,
     SDL_Texture* texture, SDL_Renderer* renderer, double fpsrend)
 {
     time_t start = time(NULL);
@@ -338,7 +335,7 @@ void display(AVCodecContext* ctx, AVPacket* pkt, AVFrame* frame, SDL_Rect* rect,
     }
 }
 
-void playaudio(AVCodecContext *ctx, AVPacket *pkt, AVFrame *frame, SDL_AudioDeviceID auddev)
+void playAudio(AVCodecContext *ctx, AVPacket *pkt, AVFrame *frame, SDL_AudioDeviceID auddev)
 {
     if (avcodec_send_packet(ctx, pkt) < 0) {
         perror("send packet");
